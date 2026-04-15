@@ -1,0 +1,37 @@
+:root {
+  font-family: "Instrument Sans", sans-serif;
+  font-size: 24px;
+  height: 100vh;
+  --background-color: #F7F8FA;
+  --foreground-color: #FFFFFF
+
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+}
+
+p {
+  margin: 0;
+}
+
+.data-page-responsive {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: clamp(1rem, 2vw, 2em);
+  margin: clamp(1rem, 3vw, 3em);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .data-page-responsive {
+    grid-template-columns: 1fr;
+  }
+}
