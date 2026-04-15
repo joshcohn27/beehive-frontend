@@ -4,6 +4,7 @@ import { resolve } from "path";
 
 export default defineConfig({
   root: __dirname,
+  base: "/projects/beehive/",
 
   plugins: [react()],
 
@@ -20,7 +21,6 @@ export default defineConfig({
 
   server: {
     proxy: {
-      // Frontend calls /api/*, Vite forwards to backend
       "/api": {
         target: "http://localhost:3000",
         changeOrigin: true,
