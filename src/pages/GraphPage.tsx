@@ -26,14 +26,23 @@ const GraphPage = () => {
   const [id] = useState<string>("1");
   const [data, setData] = useState<AllHiveDataResponse | null>(null);
 
+  const toNumberOrNull = (value: unknown): number | null => {
+    if (value === undefined || value === null || value === "") {
+      return null;
+    }
+
+    const numeric = Number(value);
+    return Number.isNaN(numeric) ? null : numeric;
+  };
+
   const temperatureData = useMemo(() => {
     if (!data) {
       return [];
     }
     return data.Hive_Data.map((entry) => ({
       TimeStamp: entry.TimeStamp,
-      Temperature: entry.Temperature,
-      Outside_Temperature: entry.Outside_Temperature,
+      Temperature: toNumberOrNull(entry.Temperature),
+      Outside_Temperature: toNumberOrNull(entry.Outside_Temperature),
     }));
   }, [data]);
 
@@ -43,8 +52,8 @@ const GraphPage = () => {
     }
     return data.Hive_Data.map((entry) => ({
       TimeStamp: entry.TimeStamp,
-      Humidity: entry.Humidity,
-      Outside_Humidity: entry.Outside_Humidity,
+      Humidity: toNumberOrNull(entry.Humidity),
+      Outside_Humidity: toNumberOrNull(entry.Outside_Humidity),
     }));
   }, [data]);
 
@@ -54,7 +63,7 @@ const GraphPage = () => {
     }
     return data.Hive_Data.map((entry) => ({
       TimeStamp: entry.TimeStamp,
-      Carbon_Dioxide: entry.Carbon_Dioxide,
+      Carbon_Dioxide: toNumberOrNull(entry.Carbon_Dioxide),
     }));
   }, [data]);
 
@@ -64,7 +73,7 @@ const GraphPage = () => {
     }
     return data.Hive_Data.map((entry) => ({
       TimeStamp: entry.TimeStamp,
-      Volume: entry.Volume,
+      Volume: toNumberOrNull(entry.Volume),
     }));
   }, [data]);
 
@@ -74,7 +83,7 @@ const GraphPage = () => {
     }
     return data.Hive_Data.map((entry) => ({
       TimeStamp: entry.TimeStamp,
-      Weight: entry.Weight,
+      Weight: toNumberOrNull(entry.Weight),
     }));
   }, [data]);
 
