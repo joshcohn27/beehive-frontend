@@ -13,37 +13,36 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/landing" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/register" element={<Navigate to="/dashboard" replace />} />
-        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/landing" element={<Navigate to="/" replace />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
 
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="/SettingsPage" element={<SettingsPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         <Route
-          path="/Temperature/:id"
+          path="/temperature/:id"
           element={<DataPage sensorType={SensorType.TEMPERATURE} />}
         />
         <Route
-          path="/Humidity/:id"
+          path="/humidity/:id"
           element={<DataPage sensorType={SensorType.HUMIDITY} />}
         />
         <Route
-          path="/CarbonDioxide/:id"
+          path="/carbondioxide/:id"
           element={<DataPage sensorType={SensorType.CARBON_DIOXIDE} />}
         />
         <Route
-          path="/Weight/:id"
+          path="/weight/:id"
           element={<DataPage sensorType={SensorType.WEIGHT} />}
         />
         <Route
-          path="/Volume/:id"
+          path="/volume/:id"
           element={<DataPage sensorType={SensorType.VOLUME} />}
         />
         <Route path="/inspections/:id" element={<InspectionPage />} />
         <Route path="/observations/:id" element={<ObservationPage />} />
 
-        <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Footer />
     </>

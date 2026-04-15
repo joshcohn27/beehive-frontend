@@ -202,7 +202,7 @@ const DataPage = ({ sensorType }: DataPageProps) => {
     }, [id, sensorType]);
 
     const backToDashboard = () => {
-        navigate("/dashboard", { replace: true });
+        navigate("/", { replace: true });
     };
 
     function getSortedData() {
@@ -255,11 +255,10 @@ const DataPage = ({ sensorType }: DataPageProps) => {
                         title={getCurrentPanelTitle(sensorType)}
                         dataSnapshot={getCurrentReading()?.[recordValueKey] ?? "--"}
                         unit={SENSOR_SYMBOL[sensorType]}
-                        lastUpdated={`Last updated ${
-                            getCurrentReading()?.TimeStamp
+                        lastUpdated={`Last updated ${getCurrentReading()?.TimeStamp
                                 ? new Date(getCurrentReading().TimeStamp).toLocaleTimeString()
                                 : "N/A"
-                        }`}
+                            }`}
                         status={StatusType.NORMAL}
                     />
 

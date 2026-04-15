@@ -528,7 +528,7 @@ const ObservationPage = () => {
     return (
         <div style={pageWrap}>
             <div style={innerWrap}>
-                <div style={backRow} onClick={() => navigate("/dashboard")}>
+                <div style={backRow} onClick={() => navigate("/")}>
                     <img src={BackArrow} alt="Back to Dashboard" />
                     <span>Back to Dashboard</span>
                 </div>
