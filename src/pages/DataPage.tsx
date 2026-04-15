@@ -141,10 +141,24 @@ const DataPage = ({ sensorType }: DataPageProps) => {
 
                 const fetchedData = genericData.map((entry: GenericData) => {
                     const record = entry as Record<string, number | string | undefined>;
+
+                    const mainValueRaw = record[recordValueKey];
+                    const outsideValueRaw = record[outsideValueKey];
+
+                    const mainValue =
+                        mainValueRaw === undefined || mainValueRaw === null || mainValueRaw === ""
+                            ? null
+                            : Number(mainValueRaw);
+
+                    const outsideValue =
+                        outsideValueRaw === undefined || outsideValueRaw === null || outsideValueRaw === ""
+                            ? null
+                            : Number(outsideValueRaw);
+
                     return {
                         TimeStamp: record["TimeStamp"],
-                        [recordValueKey]: record[recordValueKey],
-                        [outsideValueKey]: record[outsideValueKey],
+                        [recordValueKey]: Number.isNaN(mainValue) ? null : mainValue,
+                        [outsideValueKey]: Number.isNaN(outsideValue) ? null : outsideValue,
                     };
                 });
 
@@ -256,8 +270,8 @@ const DataPage = ({ sensorType }: DataPageProps) => {
                         dataSnapshot={getCurrentReading()?.[recordValueKey] ?? "--"}
                         unit={SENSOR_SYMBOL[sensorType]}
                         lastUpdated={`Last updated ${getCurrentReading()?.TimeStamp
-                                ? new Date(getCurrentReading().TimeStamp).toLocaleTimeString()
-                                : "N/A"
+                            ? new Date(getCurrentReading().TimeStamp).toLocaleTimeString()
+                            : "N/A"
                             }`}
                         status={StatusType.NORMAL}
                     />
