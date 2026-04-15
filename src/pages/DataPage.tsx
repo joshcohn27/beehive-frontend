@@ -209,7 +209,7 @@ const DataPage = ({ sensorType }: DataPageProps) => {
         const defaultStart = new Date(2026, 3, 1);
         defaultStart.setHours(0, 0, 0, 0);
 
-        const defaultEnd = new Date(2026, 3, 14);
+        const defaultEnd = new Date(2026, 3, 13);
         defaultEnd.setHours(23, 59, 59, 999);
 
         getDataFromRange(defaultStart, defaultEnd);
