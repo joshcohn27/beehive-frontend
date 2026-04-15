@@ -44,6 +44,41 @@ const DataPage = ({ sensorType }: DataPageProps) => {
     const { getCache } = useCacheStore();
     const { celsius } = useSettingsStore();
 
+    function getResponseDataKey(currentSensorType: SensorType): string {
+        if (currentSensorType === SensorType.CARBON_DIOXIDE) {
+            return "Carbon_Dioxide_Data";
+        }
+        return `${currentSensorType}_Data`;
+    }
+
+    function getRecordValueKey(currentSensorType: SensorType): string {
+        if (currentSensorType === SensorType.CARBON_DIOXIDE) {
+            return "Carbon_Dioxide";
+        }
+        return String(currentSensorType);
+    }
+
+    function getOutsideValueKey(currentSensorType: SensorType): string {
+        if (currentSensorType === SensorType.CARBON_DIOXIDE) {
+            return "Outside_Carbon_Dioxide";
+        }
+        return `Outside_${currentSensorType}`;
+    }
+
+    function getDisplayTitle(currentSensorType: SensorType): string {
+        if (currentSensorType === SensorType.CARBON_DIOXIDE) {
+            return "Beehive CO₂";
+        }
+        return `Beehive ${currentSensorType}`;
+    }
+
+    function getCurrentPanelTitle(currentSensorType: SensorType): string {
+        if (currentSensorType === SensorType.CARBON_DIOXIDE) {
+            return "Current CO₂";
+        }
+        return `Current ${currentSensorType}`;
+    }
+
     function getDataFromRange(startDate: Date, endDate: Date) {
         const start = new Date(startDate);
         const end = new Date(endDate);
@@ -88,16 +123,28 @@ const DataPage = ({ sensorType }: DataPageProps) => {
             },
         })
             .then((response) => {
-                const genericData = (response as SensorDataResponseType)[
-                    `${sensorType}_Data` as keyof SensorDataResponseType
-                ] as GenericData[];
+                const responseDataKey = getResponseDataKey(sensorType);
+                const recordValueKey = getRecordValueKey(sensorType);
+                const outsideValueKey = getOutsideValueKey(sensorType);
+
+                const genericDataRaw = (response as Record<string, unknown>)[responseDataKey];
+                const genericData = Array.isArray(genericDataRaw) ? (genericDataRaw as GenericData[]) : undefined;
+
+                if (!genericData) {
+                    console.log("sensorType:", sensorType);
+                    console.log("responseDataKey:", responseDataKey);
+                    console.log("response:", response);
+                    setData([]);
+                    setError(`No data returned for ${sensorType}.`);
+                    return;
+                }
 
                 const fetchedData = genericData.map((entry: GenericData) => {
-                    const record = entry as Record<string, number | string>;
+                    const record = entry as Record<string, number | string | undefined>;
                     return {
                         TimeStamp: record["TimeStamp"],
-                        [`${sensorType}`]: record[sensorType],
-                        [`Outside_${sensorType}`]: record[`Outside_${sensorType}`],
+                        [recordValueKey]: record[recordValueKey],
+                        [outsideValueKey]: record[outsideValueKey],
                     };
                 });
 
@@ -132,7 +179,8 @@ const DataPage = ({ sensorType }: DataPageProps) => {
         },
     ];
 
-    const title = `Beehive ${sensorType}`;
+    const title = getDisplayTitle(sensorType);
+    const recordValueKey = getRecordValueKey(sensorType);
 
     const dataPanelRowStyle: React.CSSProperties = {
         display: "flex",
@@ -176,7 +224,7 @@ const DataPage = ({ sensorType }: DataPageProps) => {
         if (sorted.length === 0) return 0;
 
         const values = sorted
-            .map((entry: any) => parseFloat(entry[sensorType]))
+            .map((entry: any) => parseFloat(entry[recordValueKey]))
             .filter((value: number) => !Number.isNaN(value));
 
         if (values.length === 0) return "No data selected";
@@ -204,13 +252,14 @@ const DataPage = ({ sensorType }: DataPageProps) => {
 
                 <div style={dataPanelRowStyle}>
                     <DataPanel
-                        title={`Current ${sensorType}`}
-                        dataSnapshot={getCurrentReading()?.[sensorType] ?? "--"}
+                        title={getCurrentPanelTitle(sensorType)}
+                        dataSnapshot={getCurrentReading()?.[recordValueKey] ?? "--"}
                         unit={SENSOR_SYMBOL[sensorType]}
-                        lastUpdated={`Last updated ${getCurrentReading()?.TimeStamp
+                        lastUpdated={`Last updated ${
+                            getCurrentReading()?.TimeStamp
                                 ? new Date(getCurrentReading().TimeStamp).toLocaleTimeString()
                                 : "N/A"
-                            }`}
+                        }`}
                         status={StatusType.NORMAL}
                     />
 

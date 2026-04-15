@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Header = () => {
     const user = useAuthStore((s) => s.user);
     const expiresAt = useAuthStore((s) => s.expiresAt);
+    const navigate = useNavigate();
 
     if (expiresAt && Date.now() >= expiresAt && user) {
         setLogout();
@@ -46,11 +47,12 @@ const Header = () => {
 
     return (
         <div style={headerStyle}>
-            <div>
-                <p style={{ fontWeight: 500 }}>
-                    <span style={{ fontWeight: 700 }}>Bee</span>Monitor
-                </p>
-            </div>
+            <p
+                style={{ fontWeight: 500, cursor: "pointer" }}
+                onClick={() => navigate("/dashboard")}
+            >
+                <span style={{ fontWeight: 700 }}>Bee</span>Monitor
+            </p>
 
             {/* NEW NAV SECTION */}
             <div style={navStyle}>
