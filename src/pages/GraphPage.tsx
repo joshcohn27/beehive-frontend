@@ -18,7 +18,7 @@ const GraphPage = () => {
   });
   const [endDate, setEndDate] = useState<Date>(() => {
     const d = new Date(2026, 3, 13);
-    d.setHours(23, 59, 59, 999);
+    d.setHours(0, 0, 0, 0);
     return d;
   });
   const [error, setError] = useState("");
