@@ -38,7 +38,7 @@ const Header = () => {
     };
 
     function goToMainSite() {
-        window.location.href = "https://joshbcohn.com/projects";
+        window.location.href = "https://joshbcohn.com";
     }
 
     function goToGitHub() {
