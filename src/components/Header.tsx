@@ -37,7 +37,7 @@ const Header = () => {
     };
 
     function goToMainSite() {
-        window.open("https://joshbcohn.com/projects");
+        window.location.href = "https://joshbcohn.com/projects";
     }
 
     function goToGitHub() {
