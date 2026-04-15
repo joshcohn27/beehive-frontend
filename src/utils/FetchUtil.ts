@@ -137,14 +137,16 @@ const loadMockData = async (): Promise<MockApiData> => {
       return JSON.parse(fromStorage) as MockApiData;
     }
 
-    const response = await fetch("/mock-api.json", {
+    const mockUrl = `${import.meta.env.BASE_URL}mock-api.json`;
+
+    const response = await fetch(mockUrl, {
       headers: { Accept: "application/json" },
     });
 
     if (!response.ok) {
       throw new ApiError("Unable to load local mock data.", {
         status: response.status,
-        url: "/mock-api.json",
+        url: mockUrl,
       });
     }
 
