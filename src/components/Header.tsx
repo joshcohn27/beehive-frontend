@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { SessionUser, useAuthStore, setLogout } from '../utils/AuthStore';
 import UserPlaceholderImage from "../assets/user_placeholder.svg";
-import  DropDownImage from '../assets/dropdown.svg';
+import DropDownImage from '../assets/dropdown.svg';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
     const user = useAuthStore((s) => s.user);
     const expiresAt = useAuthStore((s) => s.expiresAt);
 
-    // handle auto-logout if expired
     if (expiresAt && Date.now() >= expiresAt && user) {
         setLogout();
     }
@@ -24,6 +23,25 @@ const Header = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+    };
+
+    const navStyle: React.CSSProperties = {
+        display: 'flex',
+        gap: '1.5em',
+        alignItems: 'center',
+    };
+
+    const linkStyle: React.CSSProperties = {
+        cursor: 'pointer',
+        fontWeight: 600,
+    };
+
+    function goToMainSite() {
+        window.open("https://joshbcohn.com/projects");
+    }
+
+    function goToGitHub() {
+        window.open("https://github.com/joshcohn27/beehive-frontend", "_blank");
     }
 
     return (
@@ -34,20 +52,24 @@ const Header = () => {
                 </p>
             </div>
 
-            <div>
+            {/* NEW NAV SECTION */}
+            <div style={navStyle}>
+                <p style={linkStyle} onClick={goToMainSite}>Main Site</p>
+                <p style={linkStyle} onClick={goToGitHub}>View Code</p>
             </div>
 
             <div>
                 {user && <UserDropDown user={user} />}
             </div>
         </div>
-    )
-}
+    );
+};
 
 interface UserDropDownProps {
     user?: SessionUser;
 }
-const UserDropDown = ({user}: UserDropDownProps) => {
+
+const UserDropDown = ({ user }: UserDropDownProps) => {
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -58,14 +80,14 @@ const UserDropDown = ({user}: UserDropDownProps) => {
         padding: '0.25em 0.5em',
         cursor: 'pointer',
         position: 'relative',
-    }
+    };
 
     const userImageStyle = {
         width: '2em',
         clipPath: 'circle()',
         padding: ".1em",
         backgroundColor: '#cccccc',
-    }
+    };
 
     const dropDownContentsStyle: React.CSSProperties = {
         position: 'absolute',
@@ -80,14 +102,14 @@ const UserDropDown = ({user}: UserDropDownProps) => {
         flexDirection: 'column',
         gap: '0.5em',
         zIndex: 100,
-    }
+    };
 
     const dropDownItemStyle = {
         padding: '0.25em',
         width: '100%',
-    }
+    };
 
-    function handleUserDropdown(){
+    function handleUserDropdown() {
         setIsOpen(!isOpen);
     }
 
@@ -96,23 +118,23 @@ const UserDropDown = ({user}: UserDropDownProps) => {
     }
 
     return (
-            <div style={userDropdownStyle} onClick={handleUserDropdown}>
-                <img src={UserPlaceholderImage} alt={`${user?.firstName}'s avatar`} style={userImageStyle} />
-                <p>Hi, {user?.firstName}</p>
-                <img src={DropDownImage} alt="Dropdown arrow" />
+        <div style={userDropdownStyle} onClick={handleUserDropdown}>
+            <img src={UserPlaceholderImage} alt={`${user?.firstName}'s avatar`} style={userImageStyle} />
+            <p>Hi, {user?.firstName}</p>
+            <img src={DropDownImage} alt="Dropdown arrow" />
 
-                {isOpen &&
+            {isOpen &&
                 <div style={dropDownContentsStyle}>
                     <div style={dropDownItemStyle}>
-                        <p style={{margin: 0, cursor: "pointer"}} onClick={handleSettings}>Settings</p>
+                        <p style={{ margin: 0, cursor: "pointer" }} onClick={handleSettings}>Settings</p>
                     </div>
                     <div style={dropDownItemStyle}>
-                        <p style={{margin: 0, cursor: "pointer"}} onClick={() => {setLogout()}}>Logout</p>
+                        <p style={{ margin: 0, cursor: "pointer" }} onClick={() => { setLogout() }}>Logout</p>
                     </div>
-                </div>  
+                </div>
             }
-            </div>
-    )
-}
+        </div>
+    );
+};
 
-export { Header }
+export { Header };
