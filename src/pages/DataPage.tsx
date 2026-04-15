@@ -36,7 +36,7 @@ const DataPage = ({ sensorType }: DataPageProps) => {
         return d;
     });
     const [endDate, setEndDate] = useState<Date>(() => {
-        const d = new Date(2026, 3, 14);
+        const d = new Date(2026, 3, 13);
         d.setHours(23, 59, 59, 999);
         return d;
     });
