@@ -87,6 +87,23 @@ const GraphPage = () => {
     }));
   }, [data]);
 
+  const aggregateData = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return data.Hive_Data.map((entry) => ({
+      TimeStamp: entry.TimeStamp,
+      Temperature: toNumberOrNull(entry.Temperature),
+      Outside_Temperature: toNumberOrNull(entry.Outside_Temperature),
+      Humidity: toNumberOrNull(entry.Humidity),
+      Outside_Humidity: toNumberOrNull(entry.Outside_Humidity),
+      Carbon_Dioxide: toNumberOrNull(entry.Carbon_Dioxide),
+      Volume: toNumberOrNull(entry.Volume),
+      Weight: toNumberOrNull(entry.Weight),
+    }));
+  }, [data]);
+
   const aggregateSeriesConfig = useMemo(
     () => [
       { name: "Temperature", valueKey: "Temperature", color: "#FF6B6B" },
@@ -244,7 +261,7 @@ const GraphPage = () => {
           <div style={graphSectionStyle}>
             <Graph
               title={"Hive Data Overview"}
-              dataObject={data?.Hive_Data ?? []}
+              dataObject={aggregateData}
               dateRange={{ start: startData, end: endDate }}
               sensorType={SensorType.TEMPERATURE}
               hasOutsideData={false}
