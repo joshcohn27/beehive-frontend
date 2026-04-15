@@ -13,10 +13,10 @@ function App() {
     <>
       <Header />
       <Routes>
-        <Route path="/" element={<Navigate to="dashboard" replace />} />
-        <Route path="/landing" element={<Navigate to="../dashboard" replace />} />
-        <Route path="/register" element={<Navigate to="../dashboard" replace />} />
-        <Route path="/login" element={<Navigate to="../dashboard" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/landing" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/register" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/login" element={<Navigate to="/dashboard" replace />} />
 
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/SettingsPage" element={<SettingsPage />} />
@@ -43,7 +43,7 @@ function App() {
         <Route path="/inspections/:id" element={<InspectionPage />} />
         <Route path="/observations/:id" element={<ObservationPage />} />
 
-        <Route path="*" element={<Navigate to="../dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
       <Footer />
     </>
